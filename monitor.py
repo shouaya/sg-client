@@ -55,4 +55,4 @@ if __name__ == '__main__':
     target.resizeTo(900, 600)
     target.moveTo(0, 0)
     target.activate()
-    #asyncio.run(main())
+    asyncio.run(main())
