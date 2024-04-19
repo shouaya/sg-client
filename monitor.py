@@ -36,8 +36,8 @@ async def disconnect():
     print('disconnected from server')
 
 async def main():
-    await sio.connect('http://sg.weget.jp')
-    #await sio.connect('http://127.0.0.1:3000')
+    #await sio.connect('http://sg.weget.jp')
+    await sio.connect('http://127.0.0.1:3000')
     await sio.wait()
 
 def getSgWinName(title):
