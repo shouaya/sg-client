@@ -1,21 +1,24 @@
 import asyncio
 import socketio
 import pyautogui
+import sys
 
 sio = socketio.AsyncClient()
 
 @sio.event
 async def connect():
     print('connection established')
-    await sio.emit('chat message', {'response': 'hello'})
+    await sio.emit('chat message', {'connect': 'hello', 'fid': sys.argv[3]})
 
 @sio.on('chat message')
 async def on_message(data):
     print('message received with ', data)
     if "e" in data:
-        target = getSgWinName('三國志')
+        if data['tid'] != sys.argv[3]:
+            return
+        target = getSgWinName(sys.argv[1])
         if target is None:
-            print('can not find game 三國志')
+            print('can not find game ' + sys.argv[1])
             exit(1)
         if target.left < 0:
             target.maximize()
@@ -37,7 +40,7 @@ async def disconnect():
 
 async def main():
     #await sio.connect('http://sg.weget.jp')
-    await sio.connect('http://127.0.0.1:3000')
+    await sio.connect(sys.argv[2])
     await sio.wait()
 
 def getSgWinName(title):
@@ -46,13 +49,16 @@ def getSgWinName(title):
             return x
     return None
 if __name__ == '__main__':
-    target = getSgWinName('三國志')
-    
+    if len(sys.argv) != 4:
+        print('please input game_name server_url id')
+        exit(1)
+    target = getSgWinName(sys.argv[1])
     if target is None:
-        print('can not find game 三國志')
+        print('can not find game ' + sys.argv[1])
         exit(1)
     target.maximize()
     target.resizeTo(900, 600)
     target.moveTo(0, 0)
     target.activate()
     asyncio.run(main())
+#python monitor.py 三國志 http://127.0.0.1:3000 EGqG0NSZUmTdpo_xAAAN
