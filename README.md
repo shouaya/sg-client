@@ -4,25 +4,9 @@ AI for SG
 
 https://www.python.org/downloads/
 
-
 > [!NOTE]
-> f you have already installed , skip this step
+> if you have already installed python, skip this step
 
+# 2. download the script 
 
-> [!NOTE]
-> Useful information that users should know, even when skimming content.
-
-> [!TIP]
-> Helpful advice for doing things better or more easily.
-
-> [!IMPORTANT]
-> Key information users need to know to achieve their goal.
-
-> [!WARNING]
-> Urgent info that needs immediate user attention to avoid problems.
-
-> [!CAUTION]
-> Advises about risks or negative outcomes of certain actions.
-
-
-# 2. install python
+<a id="raw-url" href="https://raw.githubusercontent.com/shouaya/sg-client/main/start.zip" download>Click to Download</a>
