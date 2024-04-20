@@ -2,23 +2,28 @@ import asyncio
 import socketio
 import pyautogui
 import sys
+import urllib.parse
 
 sio = socketio.AsyncClient()
+
+gameName = '三國志'
+webServer = 'http://127.0.0.1:3000'
+myID = 'test'
 
 @sio.event
 async def connect():
     print('connection established')
-    await sio.emit('chat message', {'connect': 'hello', 'fid': sys.argv[3]})
+    await sio.emit('chat message', {'connect': 'hello', 'fid': myID})
 
 @sio.on('chat message')
 async def on_message(data):
     print('message received with ', data)
     if "e" in data:
-        if data['tid'] != sys.argv[3]:
+        if data['tid'] != myID:
             return
-        target = getSgWinName(sys.argv[1])
+        target = getSgWinName(gameName)
         if target is None:
-            print('can not find game ' + sys.argv[1])
+            print('can not find game ' + gameName)
             exit(1)
         if target.left < 0:
             target.maximize()
@@ -40,7 +45,7 @@ async def disconnect():
 
 async def main():
     #await sio.connect('http://sg.weget.jp')
-    await sio.connect(sys.argv[2])
+    await sio.connect(webServer)
     await sio.wait()
 
 def getSgWinName(title):
@@ -49,12 +54,25 @@ def getSgWinName(title):
             return x
     return None
 if __name__ == '__main__':
-    if len(sys.argv) != 4:
+    if len(sys.argv) != 2:
+        print('url not found')
+        exit(1)
+    if not sys.argv[1].startswith('weget'):
+        print('unkown url')
+        exit(1)
+    argstr = urllib.parse.unquote(sys.argv[1].strip("weget://?"))    
+    args = argstr.split(" ")
+    print(args)
+    if len(args) != 3:
         print('please input game_name server_url id')
         exit(1)
-    target = getSgWinName(sys.argv[1])
+    gameName = args[0]
+    webServer = args[1]
+    myID = args[2]
+
+    target = getSgWinName(gameName)
     if target is None:
-        print('can not find game ' + sys.argv[1])
+        print('can not find game ' + gameName)
         exit(1)
     target.maximize()
     target.resizeTo(900, 600)
@@ -62,3 +80,4 @@ if __name__ == '__main__':
     target.activate()
     asyncio.run(main())
 #python monitor.py 三國志 http://127.0.0.1:3000 EGqG0NSZUmTdpo_xAAAN
+#python monitor.py weget://%E4%B8%89%E5%9C%8B%E5%BF%97%20http%3A%2F%2F127.0.0.1%3A3000%20EGqG0NSZUmTdpo_xAAAN/
