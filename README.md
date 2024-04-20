@@ -9,4 +9,4 @@ https://www.python.org/downloads/
 
 # 2. download the script 
 
-<a id="raw-url" href="https://raw.githubusercontent.com/shouaya/sg-client/main/start.zip" download>Click to Download</a>
+<a id="raw-url" href="https://raw.githubusercontent.com/shouaya/sg-client/main/sg-monitor.bat" download>Click to Download</a>
